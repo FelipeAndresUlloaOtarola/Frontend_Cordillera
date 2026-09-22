@@ -1,0 +1,54 @@
+<div class="min-h-full bg-white p-6 text-slate-900">
+  <div class="space-y-6">
+    <app-page-header
+      title="Ventas"
+      subtitle="Registro de ventas conectado al microservicio de ventas."
+    />
+
+    @if (error()) {
+      <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {{ error() }}
+      </div>
+    }
+
+    <div class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <tr>
+              <th class="px-4 py-4">ID</th>
+              <th class="px-4 py-4">Sucursal</th>
+              <th class="px-4 py-4">Monto</th>
+              <th class="px-4 py-4">Fecha</th>
+              <th class="px-4 py-4">Estado</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 bg-white text-sm text-slate-700">
+            @if (loading()) {
+              <tr>
+                <td colspan="5" class="px-4 py-8 text-center text-sm text-slate-500">Cargando datos...</td>
+              </tr>
+            }
+            @if (!loading()) {
+              @for (sale of sales(); track sale.id) {
+                <tr>
+                  <td class="px-4 py-4 font-semibold text-slate-900">VTA-{{ sale.id }}</td>
+                  <td class="px-4 py-4">{{ sale.branch || 'Sin sucursal' }}</td>
+                  <td class="px-4 py-4">{{ formatCurrency(sale.amount) }}</td>
+                  <td class="px-4 py-4">{{ formatDateTime(sale.date) }}</td>
+                  <td class="px-4 py-4"><app-status-badge [status]="sale.status" /></td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="px-4 py-8 text-center text-sm text-slate-500">
+                    No hay ventas registradas.
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

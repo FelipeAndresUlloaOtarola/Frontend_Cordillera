@@ -1,18 +1,51 @@
-# React + Vite
+# Grupo Cordillera — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA Angular (standalone) con autenticación vía Microsoft Entra ID (MSAL), que consume el backend de Grupo Cordillera a través de Azure API Management / BFF.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Angular 22 (standalone components, señales)
+- `@azure/msal-angular` + `@azure/msal-browser` para login/logout OIDC y adjuntar el Bearer token
+- Tailwind CSS
+- Vitest (test runner por defecto del builder de Angular)
 
-## React Compiler
+## Requisitos previos
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Node.js 20+
+- Una app registration de tipo SPA en Entra ID (ver `src/environments/environment.ts`)
 
-Note: This will impact Vite dev & build performances.
+## Configuración
 
-## Expanding the ESLint configuration
+Completar en `src/environments/environment.ts` (dev) y `environment.prod.ts` (build de producción):
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+entra.spaClientId   -> Client ID de la app registration del SPA
+entra.apiClientId   -> Client ID de la app registration del API (BFF)
+entra.apiScope      -> nombre del scope expuesto por el API (ej. access_as_user)
+apiBaseUrl          -> URL del API Management (o del Gateway/BFF local en dev)
+```
+
+Ninguno de estos valores es secreto (son públicos del lado cliente), pero igual no se commitean archivos `environment.*.local.ts` si se usan para overrides locales.
+
+## Levantar en local
+
+```bash
+npm install
+npm start
+```
+
+Abre `http://localhost:4200`. El login redirige a Entra ID real (tenant configurado en `environment.ts`); no hace falta nada público para probarlo en dev.
+
+## Tests
+
+```bash
+npm test
+```
+
+## Build de producción
+
+```bash
+npm run build
+```
+
+Genera `dist/frontend/browser/`, servido por `Dockerfile`/`nginx.conf` o por Azure Static Web Apps.

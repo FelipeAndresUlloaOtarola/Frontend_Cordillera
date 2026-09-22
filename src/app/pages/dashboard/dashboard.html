@@ -1,0 +1,80 @@
+<div class="min-h-full bg-white p-6 text-slate-900">
+  <div class="space-y-6">
+    <app-page-header
+      title="Dashboard"
+      subtitle="Resumen de KPIs y estado de los servicios de inteligencia de negocio."
+    />
+
+    @if (error()) {
+      <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {{ error() }}
+      </div>
+    }
+
+    @if (loading()) {
+      <p class="text-sm text-slate-500">Cargando dashboard...</p>
+    }
+
+    @if (!loading() && data(); as dashboard) {
+      @if (dashboard.degraded) {
+        <div class="rounded-xl border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800">
+          Servicio degradado: {{ dashboard.serviciosDegradados.join(', ') }}
+        </div>
+      }
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <app-kpi-card title="Total KPIs" [value]="dashboard.summary.totalKpis" />
+        <app-kpi-card
+          title="Cumplidos"
+          [value]="dashboard.summary.kpisCumplidos"
+          tone="text-emerald-600"
+        />
+        <app-kpi-card
+          title="En riesgo"
+          [value]="dashboard.summary.kpisEnRiesgo"
+          tone="text-yellow-600"
+        />
+        <app-kpi-card
+          title="Críticos"
+          [value]="dashboard.summary.kpisCriticos"
+          tone="text-rose-600"
+        />
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <tr>
+              <th class="px-4 py-4">Código</th>
+              <th class="px-4 py-4">Nombre</th>
+              <th class="px-4 py-4">Real</th>
+              <th class="px-4 py-4">Meta</th>
+              <th class="px-4 py-4">Cumplimiento</th>
+              <th class="px-4 py-4">Estado</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 bg-white text-sm text-slate-700">
+            @for (kpi of dashboard.kpis; track kpi.id) {
+              <tr>
+                <td class="px-4 py-4 font-semibold">{{ kpi.codigo }}</td>
+                <td class="px-4 py-4">{{ kpi.nombre }}</td>
+                <td class="px-4 py-4">{{ kpi.valorReal }} {{ kpi.unidad }}</td>
+                <td class="px-4 py-4">{{ kpi.valorMeta }} {{ kpi.unidad }}</td>
+                <td class="px-4 py-4">{{ kpi.porcentajeCumplimiento }}%</td>
+                <td class="px-4 py-4"><app-status-badge [status]="kpi.estado" /></td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="px-4 py-8 text-center text-sm text-slate-500">
+                  No hay KPIs registrados.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-xs text-slate-400">Generado: {{ formatDateTime(dashboard.generatedAt) }}</p>
+    }
+  </div>
+</div>

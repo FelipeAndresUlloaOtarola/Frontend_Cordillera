@@ -1,0 +1,58 @@
+<div class="min-h-full bg-white p-6 text-slate-900">
+  <div class="space-y-6">
+    <app-page-header
+      title="Gestión de Clientes"
+      subtitle="Directorio conectado al microservicio de clientes."
+    />
+
+    @if (error()) {
+      <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        {{ error() }}
+      </div>
+    }
+
+    <div class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <tr>
+              <th class="px-4 py-4">ID</th>
+              <th class="px-4 py-4">RUT</th>
+              <th class="px-4 py-4">Nombre</th>
+              <th class="px-4 py-4">Email</th>
+              <th class="px-4 py-4">Teléfono</th>
+              <th class="px-4 py-4">Tipo</th>
+              <th class="px-4 py-4">Registro</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 bg-white text-sm text-slate-700">
+            @if (loading()) {
+              <tr>
+                <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-500">Cargando datos...</td>
+              </tr>
+            }
+            @if (!loading()) {
+              @for (customer of customers(); track customer.id) {
+                <tr>
+                  <td class="px-4 py-4 font-semibold text-slate-900">CLI-{{ customer.id }}</td>
+                  <td class="px-4 py-4">{{ customer.rut }}</td>
+                  <td class="px-4 py-4">{{ customer.name }}</td>
+                  <td class="px-4 py-4">{{ customer.email }}</td>
+                  <td class="px-4 py-4">{{ customer.phone || 'Sin teléfono' }}</td>
+                  <td class="px-4 py-4">{{ titleCase(customer.type) }}</td>
+                  <td class="px-4 py-4">{{ formatDateTime(customer.registrationDate) }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-500">
+                    No hay clientes registrados.
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
