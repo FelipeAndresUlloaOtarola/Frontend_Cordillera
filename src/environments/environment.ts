@@ -3,8 +3,8 @@ export const environment = {
   apiBaseUrl: 'http://localhost:8080',
   entra: {
     tenantId: 'c1d011a7-dcb8-4f4f-b4e4-2ca67388b40f',
-    spaClientId: 'TU_SPA_CLIENT_ID',
-    apiClientId: 'TU_API_CLIENT_ID',
+    spaClientId: '13b7c04e-c804-4050-8457-84200b9ba1ca',
+    apiClientId: '6265fd5c-82ab-414c-8c7d-7256766f7940',
     apiScope: 'access_as_user',
     redirectUri: 'http://localhost:4200',
   },

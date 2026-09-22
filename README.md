@@ -27,6 +27,16 @@ apiBaseUrl          -> URL del API Management (o del Gateway/BFF local en dev)
 
 Ninguno de estos valores es secreto (son públicos del lado cliente), pero igual no se commitean archivos `environment.*.local.ts` si se usan para overrides locales.
 
+Valores actuales (tenant `c1d011a7-dcb8-4f4f-b4e4-2ca67388b40f`, ya cargados en `environment.ts`/`environment.prod.ts`):
+
+```
+spaClientId -> 13b7c04e-c804-4050-8457-84200b9ba1ca   (Cordillera-SPA)
+apiClientId -> 6265fd5c-82ab-414c-8c7d-7256766f7940   (Cordillera-API)
+apiScope    -> access_as_user
+```
+
+El redirect URI de producción se agrega a la app `Cordillera-SPA` recién cuando exista la URL del Static Web App (Fase 6).
+
 ## Levantar en local
 
 ```bash
