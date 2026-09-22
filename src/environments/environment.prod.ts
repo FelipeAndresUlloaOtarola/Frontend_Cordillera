@@ -6,6 +6,6 @@ export const environment = {
     spaClientId: '13b7c04e-c804-4050-8457-84200b9ba1ca',
     apiClientId: '6265fd5c-82ab-414c-8c7d-7256766f7940',
     apiScope: 'access_as_user',
-    redirectUri: 'TU_URL_DE_STATIC_WEB_APP',
+    redirectUri: 'https://agreeable-wave-0e10dc60f.2.azurestaticapps.net',
   },
 };
