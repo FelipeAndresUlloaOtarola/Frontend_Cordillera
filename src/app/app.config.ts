@@ -1,5 +1,5 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
   MSAL_GUARD_CONFIG,
@@ -20,7 +20,7 @@ import {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes, withEnabledBlockingInitialNavigation()),
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
@@ -42,5 +42,14 @@ export const appConfig: ApplicationConfig = {
     MsalService,
     MsalGuard,
     MsalBroadcastService,
+    provideAppInitializer(async () => {
+      const msalService = inject(MsalService);
+      await msalService.instance.initialize();
+      const result = await msalService.instance.handleRedirectPromise();
+      const account = result?.account ?? msalService.instance.getAllAccounts()[0] ?? null;
+      if (account) {
+        msalService.instance.setActiveAccount(account);
+      }
+    }),
   ],
 };

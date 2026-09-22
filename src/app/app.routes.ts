@@ -3,6 +3,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { AppLayout } from './layout/app-layout/app-layout';
 
 export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login').then((m) => m.Login),
@@ -13,7 +14,6 @@ export const routes: Routes = [
     canActivate: [MsalGuard],
     canActivateChild: [MsalGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
         path: 'dashboard',
         loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),

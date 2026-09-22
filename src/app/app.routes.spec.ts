@@ -3,9 +3,15 @@ import { routes } from './app.routes';
 
 describe('app.routes', () => {
   it('protege las rutas privadas con MsalGuard', () => {
-    const privateRoute = routes.find((route) => route.path === '');
+    const privateRoute = routes.find((route) => route.path === '' && route.component);
     expect(privateRoute?.canActivate).toContain(MsalGuard);
     expect(privateRoute?.canActivateChild).toContain(MsalGuard);
+  });
+
+  it('la raiz redirige a login sin pasar por el guard', () => {
+    const rootRedirect = routes.find((route) => route.path === '' && route.redirectTo);
+    expect(rootRedirect?.redirectTo).toBe('login');
+    expect(rootRedirect?.canActivate).toBeUndefined();
   });
 
   it('deja la ruta de login fuera del guard', () => {

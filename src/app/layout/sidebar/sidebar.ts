@@ -36,7 +36,7 @@ const NAV_ITEMS: NavItem[] = [
         <button
           type="button"
           (click)="authService.logout()"
-          class="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+          class="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-red-600 hover:bg-red-600 hover:text-white"
         >
           Cerrar sesión
         </button>

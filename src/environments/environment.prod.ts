@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'TU_URL_DE_API_MANAGEMENT',
+  apiBaseUrl: 'https://apim-cordillera.azure-api.net',
   entra: {
     tenantId: 'c1d011a7-dcb8-4f4f-b4e4-2ca67388b40f',
     spaClientId: '13b7c04e-c804-4050-8457-84200b9ba1ca',
